@@ -21,7 +21,6 @@ from rest_framework import routers
 from app import views
 
 router = routers.DefaultRouter()
-# router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'favorites', views.FavoriteViewSet)
@@ -30,6 +29,8 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
+    url(r'chat/$', views.CreateChatView.as_view(), name='chat'),
+    url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

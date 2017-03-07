@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
-from app.models import Profile, Favorite
+from app.models import Profile, Favorite, Chat, Settings
 from rest_framework import viewsets
-from app.serializers import UserSerializer, GroupSerializer, ProfileSerializer, FavoriteSerializer
+from app.serializers import UserSerializer, GroupSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer
 from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -47,3 +47,13 @@ class CreateProfileView(CreateAPIView):
     model = Profile
     permission_classes = (AllowAny,)
     serializer_class = ProfileSerializer
+
+class CreateChatView(CreateAPIView):
+    model = Chat
+    permission_classes = (AllowAny,)
+    serializer_class = ChatSerializer
+
+class CreateSettingsView(CreateAPIView):
+    model = Settings
+    permission_classes = (AllowAny,)
+    serializer_class = SettingsSerializer

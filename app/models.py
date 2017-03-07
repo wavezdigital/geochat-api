@@ -10,6 +10,7 @@ class Profile(models.Model):
     photo = models.CharField(max_length=255)
     level = models.IntegerField() #default: 0- standard/1- superuser
     status = models.IntegerField() #default: 1- Active/0- inactive/2- Ban
+    # last_location = models.PointField()
 
     #to get the full name of user instance
     def name(self):
@@ -32,3 +33,11 @@ class Favorite(models.Model):
 
     def __str__(self):
         return self.place_name
+
+class Chat(models.Model):
+    profile = models.OneToOneField(Profile, related_name='profile_id')
+    place_identifier = models.CharField(max_length=255)
+
+class Settings(models.Model):
+    profile = models.OneToOneField(Profile, related_name='profile_id')
+    notification = models.BooleanField()
