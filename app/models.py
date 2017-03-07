@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='user')
+    user = models.OneToOneField(User, related_name='profile')
     facebook_id = models.CharField(max_length=255)
     facebook_token = models.CharField(max_length=255)
     push_device_token = models.CharField(max_length=255)
