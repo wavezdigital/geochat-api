@@ -5,11 +5,20 @@ from app.models import Profile, Favorite, Chat, Settings
 from rest_framework import viewsets
 from app.serializers import UserSerializer, GroupSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer
 from rest_framework.decorators import api_view
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveAPIView, 
+    ListAPIView,
+    UpdateAPIView,
+    DestroyAPIView
+    )
 from rest_framework.permissions import AllowAny
 from material.frontend.views import ModelViewSet
 from push_notifications.models import APNSDevice, GCMDevice
 from django.http import HttpResponse
+from rest_framework_serializer_extensions.views import SerializerExtensionsAPIViewMixin
+# from rest_framework.mixins import UpdateModelMixin
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -36,6 +45,29 @@ class CreateProfileView(CreateAPIView):
     model = Profile
     permission_classes = (AllowAny,)
     serializer_class = ProfileSerializer
+
+class ListProfileView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+class DetailProfileAPIView(SerializerExtensionsAPIViewMixin, RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+class profileUpdateAPIView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+    # model = User
+    # queryset = Profile.objects.all()
+    # serializer_class = UserSerializer
+
+class profileDeleteAPIView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
 
 class CreateChatView(CreateAPIView):
     model = Chat
