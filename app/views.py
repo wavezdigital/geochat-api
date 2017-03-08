@@ -8,33 +8,22 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from material.frontend.views import ModelViewSet
+from push_notifications.models import APNSDevice, GCMDevice
+from django.http import HttpResponse
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
 class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-            
 
 class FavoriteViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
 
@@ -57,3 +46,10 @@ class CreateSettingsView(CreateAPIView):
     model = Settings
     permission_classes = (AllowAny,)
     serializer_class = SettingsSerializer
+
+def send_push(request):
+    #TODO: Android
+
+    device = APNSDevice.objects.get(registration_id='ecf8943dc2b0b20a9f7b98e2584b20f647793613fa7d91367f935165986829ab')
+    device.send_message("TESTE", content_available=1, extra={"foo": "bar"}, sound="default")
+    return HttpResponse("Device notified")

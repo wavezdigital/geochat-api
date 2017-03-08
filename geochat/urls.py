@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
     url(r'chat/$', views.CreateChatView.as_view(), name='chat'),
     url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
+    url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

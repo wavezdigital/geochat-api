@@ -38,6 +38,12 @@ class Chat(models.Model):
     profile = models.OneToOneField(Profile, related_name='profile_id')
     place_identifier = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.place_identifier
+
 class Settings(models.Model):
     profile = models.OneToOneField(Profile, related_name='profile_id')
     notification = models.BooleanField()
+
+    def __str__(self):
+        return self.notification
