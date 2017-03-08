@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from django.views import generic
 from rest_framework import routers
 from app import views
+from app.views import ListProfileView, profileUpdateAPIView, DetailProfileAPIView, profileDeleteAPIView
 
 router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet)
@@ -32,4 +33,8 @@ urlpatterns = [
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^profile/$', ListProfileView.as_view(), name='list' ),
+    url(r'^profile/(?P<id>[\w-]+)/$', DetailProfileAPIView.as_view(), name='detail_view' ),
+    url(r'^profile/(?P<id>[\w-]+)/edit/$', profileUpdateAPIView.as_view(), name='update' ),
+    url(r'^profile/(?P<id>[\w-]+)/delete/$', profileDeleteAPIView.as_view(), name='delete' ),
 ]

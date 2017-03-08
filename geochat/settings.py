@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'app',
     'push_notifications',
+    'rest_framework_serializer_extensions',
 ]
 
 MIDDLEWARE = [
