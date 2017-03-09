@@ -59,7 +59,6 @@ class ChatSerializer(serializers.Serializer):
         )
 
     def create(self, request):
-        #TODO: get profile by id and create new setting object
         profile_id = request.get('profile_id')
         profile = Profile.objects.get(id=profile_id) 
         chat = Chat.objects.create(profile=profile, **request)

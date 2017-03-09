@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
     url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
+    url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #profileCRUD
