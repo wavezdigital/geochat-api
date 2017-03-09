@@ -51,6 +51,13 @@ class ChatSerializer(serializers.Serializer):
     profile_id = serializers.IntegerField()
     place_identifier = serializers.CharField(max_length=255)
 
+    class Meta:
+        model = Profile
+        fields = ('facebook_id', 'user_id', 'level', 'status', 'photo')
+        expandable_fields = dict(
+            profile=ProfileSerializer
+        )
+
     def create(self, request):
         #TODO: get profile by id and create new setting object
         profile_id = request.get('profile_id')

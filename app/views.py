@@ -79,10 +79,20 @@ class profileDeleteAPIView(DestroyAPIView):
     serializer_class = UserSerializer
     lookup_field = 'id'
 
+class ListChatView(ListAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
 class CreateChatView(CreateAPIView):
     model = Chat
     permission_classes = (AllowAny,)
     serializer_class = ChatSerializer
+
+class DetailChatAPIView(SerializerExtensionsAPIViewMixin, RetrieveAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    lookup_field = 'id'
+
 
 class CreateSettingsView(CreateAPIView):
     model = Settings
