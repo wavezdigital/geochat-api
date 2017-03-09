@@ -19,7 +19,12 @@ from django.conf.urls import url, include
 from django.views import generic
 from rest_framework import routers
 from app import views
-from app.views import ListProfileView, profileUpdateAPIView, DetailProfileAPIView, profileDeleteAPIView
+from app.views import (
+    ListProfileView, 
+    profileUpdateAPIView, 
+    DetailProfileAPIView, 
+    profileDeleteAPIView,
+    DetailChatAPIView)
 
 router = routers.DefaultRouter()
 router.register(r'groups', views.GroupViewSet)
@@ -30,13 +35,18 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
-    url(r'chat/$', views.CreateChatView.as_view(), name='chat'),
     url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
     url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #profileCRUD
     url(r'^profile/$', ListProfileView.as_view(), name='list' ),
     url(r'^profile/(?P<id>[\w-]+)/$', DetailProfileAPIView.as_view(), name='detail_view' ),
     url(r'^profile/edit/(?P<id>[\w-]+)/$', profileUpdateAPIView.as_view(), name='update' ),
     url(r'^profile/delete/(?P<id>[\w-]+)/$', profileDeleteAPIView.as_view(), name='delete' ),
+
+    #chatCrud
+    url(r'chat/$', ListChatView.as_view(), name='chat_list'),
+    url(r'chat/$', views.CreateChatView.as_view(), name='chat'),
+    url(r'^chat/(?P<id>[\w-]+)/$', DetailChatAPIView.as_view(), name='chat_detail' ),    
 ]
