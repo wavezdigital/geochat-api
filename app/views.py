@@ -48,6 +48,7 @@ class CreateProfileView(CreateAPIView):
 
 class ListProfileView(ListAPIView):
     queryset = User.objects.all()
+    permission_classes = (AllowAny,)
     serializer_class = UserSerializer
     
 class DetailProfileAPIView(SerializerExtensionsAPIViewMixin, RetrieveAPIView):
@@ -85,3 +86,6 @@ def send_push(request):
     device = APNSDevice.objects.get(registration_id='ecf8943dc2b0b20a9f7b98e2584b20f647793613fa7d91367f935165986829ab')
     device.send_message("TESTE", content_available=1, extra={"foo": "bar"}, sound="default")
     return HttpResponse("Device notified")
+
+
+
