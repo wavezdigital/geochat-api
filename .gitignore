@@ -17,6 +17,7 @@ myprojectenv
 /static
 /coverage
 /.idea
+.coverage
 
 # Icon must end with two \r
 Icon

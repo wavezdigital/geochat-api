@@ -19,14 +19,12 @@ from django.conf.urls import url, include
 from django.views import generic
 from rest_framework import routers
 from app import views
-from app.views import (
-    ListProfileView, 
-    profileUpdateAPIView, 
-    DetailProfileAPIView, 
-    profileDeleteAPIView,
-    DetailChatAPIView)
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Square API')
 
 router = routers.DefaultRouter()
+router.register(r'users', views.GroupViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'favorites', views.FavoriteViewSet)
@@ -39,14 +37,5 @@ urlpatterns = [
     url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #profileCRUD
-    url(r'^profile/$', ListProfileView.as_view(), name='list' ),
-    url(r'^profile/(?P<id>[\w-]+)/$', DetailProfileAPIView.as_view(), name='detail_view' ),
-    url(r'^profile/edit/(?P<id>[\w-]+)/$', profileUpdateAPIView.as_view(), name='update' ),
-    url(r'^profile/delete/(?P<id>[\w-]+)/$', profileDeleteAPIView.as_view(), name='delete' ),
-
-    #chatCrud
-    url(r'chat/$', ListChatView.as_view(), name='chat_list'),
-    url(r'chat/$', views.CreateChatView.as_view(), name='chat'),
-    url(r'^chat/(?P<id>[\w-]+)/$', DetailChatAPIView.as_view(), name='chat_detail' ),    
+    url(r'^docs/$', schema_view),
 ]

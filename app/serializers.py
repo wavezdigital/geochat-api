@@ -13,12 +13,17 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ('url', 'name')
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+    email = serializers.ReadOnlyField(source='user.email')
 
     class Meta:
         model = Profile
-        fields = ['facebook_id', 'facebook_token', 'push_device_token', 'photo', 'status', 'level']
+        fields = ['id','facebook_id', 'facebook_token', 'push_device_token', 'photo', 'status', 'level', 'username', 'email']
 
+        def get(self, request, *args, **kwargs):
+            profile = self.get_object()
+            return profile
 
 class FavoriteSerializer(serializers.HyperlinkedModelSerializer):
 

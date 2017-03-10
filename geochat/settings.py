@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'app',
     'push_notifications',
     'rest_framework_serializer_extensions',
+    'rest_framework_swagger',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -132,10 +134,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Email configs
 
-EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'parsifal_app'
-EMAIL_HOST_PASSWORD = 'mys3cr3tp4ssw0rd'
+EMAIL_HOST_USER = 'hello@wavez.com.br'
+EMAIL_HOST_PASSWORD = 'Hackers@2017Hello'
 EMAIL_USE_TLS = True
 
 #Rest framework
@@ -155,3 +157,11 @@ PUSH_NOTIFICATIONS_SETTINGS = {
         "WNS_SECRET_KEY": "[your app secret key, e.g.: 'KDiejnLKDUWodsjmewuSZkk']",
 }
 
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=app',
+]

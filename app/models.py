@@ -35,7 +35,7 @@ class Favorite(models.Model):
         return self.place_name
 
 class Chat(models.Model):
-    profile = models.OneToOneField(Profile, related_name='profile_id')
+    profile = models.OneToOneField(Profile, related_name='user_profile_id')
     place_identifier = models.CharField(max_length=255)
 
     def __str__(self):

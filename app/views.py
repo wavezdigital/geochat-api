@@ -17,8 +17,6 @@ from material.frontend.views import ModelViewSet
 from push_notifications.models import APNSDevice, GCMDevice
 from django.http import HttpResponse
 from rest_framework_serializer_extensions.views import SerializerExtensionsAPIViewMixin
-# from rest_framework.mixins import UpdateModelMixin
-
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -28,9 +26,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-class ProfileViewSet(viewsets.ModelViewSet):
+class ProfileViewSet(viewsets.ModelViewSet, SerializerExtensionsAPIViewMixin, RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    lookup_field = 'id'
 
 class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = Favorite.objects.all()
@@ -46,56 +45,18 @@ class CreateProfileView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ProfileSerializer
 
-class ListProfileView(ListAPIView):
-    queryset = User.objects.all()
+class CreateSettingsView(CreateAPIView):
+    model = Settings
     permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
-    
-class DetailProfileAPIView(SerializerExtensionsAPIViewMixin, RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'id'
-
-class profileUpdateAPIView(UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'id'
-
-    # model = User
-    # queryset = Profile.objects.all()
-    # serializer_class = UserSerializer
-
-class profileDeleteAPIView(DestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'id'
-
-class ListChatView(ListAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
+    serializer_class = SettingsSerializer
 
 class CreateChatView(CreateAPIView):
     model = Chat
     permission_classes = (AllowAny,)
     serializer_class = ChatSerializer
 
-class DetailChatAPIView(SerializerExtensionsAPIViewMixin, RetrieveAPIView):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    lookup_field = 'id'
-
-
-class CreateSettingsView(CreateAPIView):
-    model = Settings
-    permission_classes = (AllowAny,)
-    serializer_class = SettingsSerializer
-
 def send_push(request):
     #TODO: Android
-
     device = APNSDevice.objects.get(registration_id='ecf8943dc2b0b20a9f7b98e2584b20f647793613fa7d91367f935165986829ab')
     device.send_message("TESTE", content_available=1, extra={"foo": "bar"}, sound="default")
     return HttpResponse("Device notified")
-
-
-
