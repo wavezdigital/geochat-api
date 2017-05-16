@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
 from app.models import Profile, Favorite, Chat, Settings
 from rest_framework import viewsets
-from app.serializers import UserSerializer, GroupSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer
+from app.serializers import UserSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer, GroupSerializer
 from rest_framework.decorators import api_view
 from rest_framework.generics import (
     CreateAPIView,
@@ -17,6 +17,10 @@ from material.frontend.views import ModelViewSet
 from push_notifications.models import APNSDevice, GCMDevice
 from django.http import HttpResponse
 from rest_framework_serializer_extensions.views import SerializerExtensionsAPIViewMixin
+from rest_framework import filters
+from rest_framework import generics
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -39,6 +43,13 @@ class CreateUserView(CreateAPIView):
     model = User
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
+
+class UserListByEmailView(ListAPIView):
+    model  = User
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        response = User.objects.filter( email = self.request.GET['email'] )
+        return response
 
 class CreateProfileView(CreateAPIView):
     model = Profile

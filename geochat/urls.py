@@ -21,10 +21,11 @@ from rest_framework import routers
 from app import views
 from rest_framework_swagger.views import get_swagger_view
 
+
 schema_view = get_swagger_view(title='Square API')
 
 router = routers.DefaultRouter()
-router.register(r'users', views.GroupViewSet)
+router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'favorites', views.FavoriteViewSet)
@@ -33,6 +34,7 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
+    url(r'validate-email/$', views.UserListByEmailView.as_view(), name='validate_email'),
     url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
     url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
