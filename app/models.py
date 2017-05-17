@@ -22,7 +22,7 @@ class Profile(models.Model):
         return self.name
 
 class Favorite(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile_id')
     place_name = models.CharField(max_length=255)
     place_identifier = models.CharField(max_length=255)
 
