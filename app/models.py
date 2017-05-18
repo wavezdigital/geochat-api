@@ -25,6 +25,7 @@ class Favorite(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile_id')
     place_name = models.CharField(max_length=255)
     place_identifier = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, default='NO_ADDRESS_ENTERED')
 
     def name(self):
         return self.profile.user.first_name + ' ' + self.profile.user.last_name

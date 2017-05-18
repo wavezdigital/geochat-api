@@ -25,7 +25,7 @@ SECRET_KEY = 'd5s%h8uc=(tm2h1(6m#891=&&gjg(2tau*s8+z*a^vqg490bz_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.0.0.5", "geochat.dev"]
+ALLOWED_HOSTS = ["10.0.0.5", "geochat.local"]
 
 # Application definition
 
@@ -144,6 +144,7 @@ EMAIL_USE_TLS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'PAGE_SIZE': 10
 }
 

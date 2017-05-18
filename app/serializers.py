@@ -29,10 +29,11 @@ class FavoriteSerializer(serializers.HyperlinkedModelSerializer):
     profile_id = serializers.IntegerField()
     place_name = serializers.CharField(max_length=255)
     place_identifier = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=255,  default='NO_ADDRESS_ENTERED')
 
     class Meta:
         model = Favorite
-        fields = ('place_name', 'place_identifier', 'profile_id')
+        fields = ('place_name', 'place_identifier', 'profile_id', 'address')
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
