@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'register/$', views.CreateUserView.as_view(), name='user'),
     url(r'validate-email/$', views.UserListByEmailView.as_view(), name='validate_email'),
+    url(r'favorite-by-profile-id/(?P<profile_id>\d+)/$', views.FavoriteByProfileId.as_view(), name='favorite_by_profile_id'),
     url(r'settings/$', views.CreateSettingsView.as_view(), name='settings'),
     url(r'push/$', views.send_push, name='push'),
     url(r'new-profile/$', views.CreateProfileView.as_view(), name='profile'),
