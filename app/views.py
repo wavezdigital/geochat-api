@@ -51,6 +51,13 @@ class UserListByEmailView(ListAPIView):
         response = User.objects.filter( email = self.request.GET['email'] )
         return response
 
+class FavoriteByProfileId(ListAPIView):
+    model  = Favorite
+    serializer_class = FavoriteSerializer
+    def get_queryset(self):
+        response = Favorite.objects.filter( profile_id = self.kwargs['profile_id'] )
+        return response
+
 class CreateProfileView(CreateAPIView):
     model = Profile
     permission_classes = (AllowAny,)

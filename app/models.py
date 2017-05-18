@@ -42,7 +42,7 @@ class Chat(models.Model):
         return self.place_identifier
 
 class Settings(models.Model):
-    profile = models.OneToOneField(Profile, related_name='profile_id')
+    profile = models.OneToOneField(Profile, related_name='profile_settings_id')
     notification = models.BooleanField()
 
     def __str__(self):
