@@ -18,7 +18,7 @@ class Profile(models.Model):
     name.short_description = "Name"
     full_name = property(name)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class Favorite(models.Model):
@@ -39,12 +39,12 @@ class Chat(models.Model):
     profile = models.OneToOneField(Profile, related_name='user_profile_id')
     place_identifier = models.CharField(max_length=255)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.place_identifier
 
 class Settings(models.Model):
     profile = models.OneToOneField(Profile, related_name='profile_settings_id')
     notification = models.BooleanField()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.notification
