@@ -32,7 +32,7 @@ class Favorite(models.Model):
     name.short_description = "Name"
     full_name = property(name)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.place_name
 
 class Chat(models.Model):
