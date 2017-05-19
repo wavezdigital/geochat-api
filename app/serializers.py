@@ -33,7 +33,7 @@ class FavoriteSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Favorite
-        fields = ('place_name', 'place_identifier', 'profile_id', 'address')
+        fields = ('id','place_name', 'place_identifier', 'profile_id', 'address')
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
