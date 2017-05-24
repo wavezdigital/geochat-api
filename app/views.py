@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
-from app.models import Profile, Favorite, Chat, Settings
+from app.models import Profile, Favorite, Chat, Settings, Complaints
 from rest_framework import viewsets
-from app.serializers import UserSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer, GroupSerializer
+from app.serializers import UserSerializer, ProfileSerializer, FavoriteSerializer, ChatSerializer, SettingsSerializer, GroupSerializer, ComplaintsSerializer
 from rest_framework.decorators import api_view
 from rest_framework.generics import (
     CreateAPIView,
@@ -14,13 +14,13 @@ from rest_framework.generics import (
     )
 from rest_framework.permissions import AllowAny
 from material.frontend.views import ModelViewSet
-from push_notifications.models import APNSDevice, GCMDevice
 from django.http import HttpResponse
 from rest_framework_serializer_extensions.views import SerializerExtensionsAPIViewMixin
 from rest_framework import filters
 from rest_framework import generics
-
-
+from rest_framework.response import Response
+import json
+from push_notifications.models import APNSDevice, GCMDevice
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -73,8 +73,39 @@ class CreateChatView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ChatSerializer
 
+class ComplaintsViewSet(viewsets.ModelViewSet, SerializerExtensionsAPIViewMixin, RetrieveAPIView):
+    queryset = Complaints.objects.all()
+    serializer_class = ComplaintsSerializer
+    lookup_field = 'id'
+
+class CreateComplaintsView(CreateAPIView):
+    model = Complaints
+    permission_classes = (AllowAny,)
+    serializer_class = ComplaintsSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        count = Complaints.objects.filter(profile_receive_complaint_id=request.data['profile_receive_complaint_id']).count()
+        if(count >= 2):
+            user_id = request.data['profile_receive_complaint_id'];
+            description = request.data['description']
+            try:
+                device = APNSDevice.objects.get(user_id=user_id)
+                content = {'total_complaints:':count , 'complaint': serializer.data}
+                device.send_message("Você Foi denunciado!", content_available=1, extra=content, sound="default")                
+            except Exception as e:
+                content = {'total_complaints:':count , 'complaint': serializer.data}
+            # device.send_message("Você Foi denunciado por: " + description, content_available=1, extra={"foo": "bar"}, sound="default")
+            return Response(content)
+        else:
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data)
+
 def send_push(request):
     #TODO: Android
-    device = APNSDevice.objects.get(registration_id='ecf8943dc2b0b20a9f7b98e2584b20f647793613fa7d91367f935165986829ab')
-    device.send_message("TESTE", content_available=1, extra={"foo": "bar"}, sound="default")
+    # device = APNSDevice.objects.get(registration_id='a18c2b07cb2fc2c083b2e8a391ea897a077918a63c60c283787a952b5792665f')
+    device = APNSDevice.objects.get(user_id=2)
+    device.send_message("TESTE", content_available=1, extra={"foo": "bar"})
     return HttpResponse("Device notified")

@@ -48,3 +48,13 @@ class Settings(models.Model):
 
     def __unicode__(self):
         return self.notification
+
+class Complaints(models.Model):
+    profile_denouncing = models.ForeignKey(Profile, related_name='profile_denouncing_id')
+    profile_receive_complaint = models.ForeignKey(Profile, related_name='profile_receive_complaint')
+    description = models.CharField(max_length=255)
+    place_identifier = models.CharField(max_length=255)
+    complaint_date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.description

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from app.models import Profile, Favorite, Settings, Chat
+from app.models import Profile, Favorite, Settings, Chat, Complaints
 from django.http import QueryDict
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -82,3 +82,14 @@ class SettingsSerializer(serializers.Serializer):
         profile = Profile.objects.get(id=profile_id) 
         settings = Settings.objects.create(profile=profile, **request)
         return settings
+
+class ComplaintsSerializer(serializers.HyperlinkedModelSerializer):
+    profile_denouncing_id = serializers.IntegerField()
+    profile_receive_complaint_id = serializers.IntegerField()
+    place_identifier = serializers.CharField(max_length=255)
+    description = serializers.CharField(max_length=255)
+    complaint_date = serializers.DateTimeField()
+
+    class Meta:
+        model = Complaints
+        fields = ('id', 'profile_denouncing_id', 'profile_receive_complaint_id', 'place_identifier', 'description', 'complaint_date') 
