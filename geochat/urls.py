@@ -20,7 +20,7 @@ from django.views import generic
 from rest_framework import routers
 from app import views
 from rest_framework_swagger.views import get_swagger_view
-from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet
+from push_notifications.api.rest_framework import APNSDeviceAuthorizedViewSet, GCMDeviceAuthorizedViewSet, APNSDeviceViewSet
 
 
 schema_view = get_swagger_view(title='Square API')
@@ -31,7 +31,7 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'favorites', views.FavoriteViewSet)
 router.register(r'complaints', views.ComplaintsViewSet)
-router.register(r'device/apns', APNSDeviceAuthorizedViewSet)
+router.register(r'device/apns', APNSDeviceViewSet)
 router.register(r'device/gcm', GCMDeviceAuthorizedViewSet)
 
 urlpatterns = [
@@ -46,4 +46,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^docs/$', schema_view),
     url(r'complaints-create/$', views.CreateComplaintsView.as_view(), name='complaints_view'),
+    url(r'^device/create-apns/?$', views.APNSDeviceCreateViewSet.as_view(), name='create_apns_device')
 ]

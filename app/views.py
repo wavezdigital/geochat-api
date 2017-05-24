@@ -21,6 +21,8 @@ from rest_framework import generics
 from rest_framework.response import Response
 import json
 from push_notifications.models import APNSDevice, GCMDevice
+from push_notifications.api.rest_framework import APNSDevice
+from push_notifications.api.rest_framework import APNSDeviceSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -102,6 +104,17 @@ class CreateComplaintsView(CreateAPIView):
         else:
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data)
+
+class APNSDeviceCreateViewSet(CreateAPIView):
+    model = APNSDevice
+    permission_classes = (AllowAny,)
+    serializer_class = APNSDeviceSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data['user_id'] = request.data['user_id']
+        self.perform_create(serializer)
+        return Response(serializer.data)
 
 def send_push(request):
     #TODO: Android
