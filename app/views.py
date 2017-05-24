@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import get_user_model
@@ -91,15 +92,15 @@ class CreateComplaintsView(CreateAPIView):
         self.perform_create(serializer)
         count = Complaints.objects.filter(profile_receive_complaint_id=request.data['profile_receive_complaint_id']).count()
         if(count >= 2):
-            user_id = request.data['profile_receive_complaint_id'];
+            profile_id = request.data['profile_receive_complaint_id'];
+            profile = Profile.objects.get(id=profile_id)
             description = request.data['description']
             try:
-                device = APNSDevice.objects.get(user_id=user_id)
-                content = {'total_complaints:':count , 'complaint': serializer.data}
+                device = APNSDevice.objects.get(user_id=profile.user_id)
+                content = {'push': 'SENDED', 'total_complaints:':count , 'complaint': serializer.data}
                 device.send_message("Você Foi denunciado!", content_available=1, extra=content, sound="default")                
             except Exception as e:
-                content = {'total_complaints:':count , 'complaint': serializer.data}
-            # device.send_message("Você Foi denunciado por: " + description, content_available=1, extra={"foo": "bar"}, sound="default")
+                content = {'push': 'NOT_SEND', 'total_complaints:':count , 'complaint': serializer.data}
             return Response(content)
         else:
             headers = self.get_success_headers(serializer.data)
