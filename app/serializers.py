@@ -88,7 +88,7 @@ class ComplaintsSerializer(serializers.HyperlinkedModelSerializer):
     profile_receive_complaint_id = serializers.IntegerField()
     place_identifier = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255)
-    complaint_date = serializers.DateTimeField()
+    #complaint_date = serializers.DateTimeField()
 
     class Meta:
         model = Complaints
