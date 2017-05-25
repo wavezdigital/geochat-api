@@ -55,6 +55,6 @@ class Complaints(models.Model):
     description = models.CharField(max_length=255)
     place_identifier = models.CharField(max_length=255)
     complaint_date = models.DateTimeField(auto_now=True)
-
+    
     def __unicode__(self):
         return self.description
