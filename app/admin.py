@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Favorite, Chat, User
+from .models import Profile, Favorite, Chat, User, Complaints
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'get_user_name', 'status', 'level')
@@ -27,3 +27,15 @@ class FavoriteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Favorite, FavoriteAdmin)
+
+class ComplaintsAdmin(admin.ModelAdmin):
+    list_display = ('id','place_identifier', 'description')
+    fields = [ 'description', 'place_identifier']
+
+    # def get_profile_name(self, obj):
+    #     user_profile = User.objects.get(id=obj.profile.user_id)
+    #     return user_profile.username
+    # get_profile_name.short_description = "User Name"
+
+
+admin.site.register(Complaints, ComplaintsAdmin)
